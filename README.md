@@ -4,7 +4,7 @@ A Cinnamon extension that highlights the focused window with an animated top
 bar and a configurable frame. Because it draws at compositor level, the frame
 also works around Chromium, Qt, Wine and other non-GTK windows.
 
-![Active Window Highlight settings with the blue frame and animated top bar](docs/settings-window-with-highlight.png)
+![Active Window Highlight settings with the blue frame and animated top bar](docs/settings-window-highlighted.png)
 
 The screenshot shows Cinnamon's native settings window on a German system.
 Every option can be changed while the extension is running.
