@@ -57,6 +57,7 @@ class ActiveWindowHighlight {
         this.settings = null;
         this.focusSignal = 0;
         this.workspaceSignal = 0;
+        this.restackSignal = 0;
         this.positionSignal = 0;
         this.sizeSignal = 0;
         this.stateSignal = 0;
@@ -112,6 +113,10 @@ class ActiveWindowHighlight {
             'active-workspace-changed',
             update
         );
+        this.restackSignal = global.display.connect(
+            'restacked',
+            this.restackHighlight.bind(this)
+        );
 
         this.startAnimation();
         this.onFocusChanged();
@@ -127,6 +132,10 @@ class ActiveWindowHighlight {
         if (this.workspaceSignal) {
             global.workspace_manager.disconnect(this.workspaceSignal);
             this.workspaceSignal = 0;
+        }
+        if (this.restackSignal) {
+            global.display.disconnect(this.restackSignal);
+            this.restackSignal = 0;
         }
 
         this.cleanupWindowSignals();
@@ -234,6 +243,31 @@ class ActiveWindowHighlight {
 
         this.updateFrame(rect);
         this.updateTopBar(rect);
+        this.restackHighlight();
+    }
+
+    restackHighlight() {
+        let focusWindow = global.display.focus_window;
+        if (!this.shouldShowFor(focusWindow)) {
+            this.hideAll();
+            return;
+        }
+
+        let windowActor = focusWindow.get_compositor_private();
+        if (!windowActor || windowActor.get_parent() !== global.window_group) {
+            this.hideAll();
+            return;
+        }
+
+        // Keep the overlays adjacent to their window in Muffin's real stack:
+        // above the focused window, below every higher-stacked/on-top window.
+        let sibling = windowActor;
+        for (let actor of [this.frameActor, this.barActor]) {
+            if (actor && actor.visible && actor.get_parent() === global.window_group) {
+                global.window_group.set_child_above_sibling(actor, sibling);
+                sibling = actor;
+            }
+        }
     }
 
     ensureFrameActor() {
@@ -243,9 +277,11 @@ class ActiveWindowHighlight {
 
         this.frameActor = new St.Widget({
             name: 'ActiveWindowFrame',
-            reactive: false
+            reactive: false,
+            visible: false
         });
-        // Above application windows, below Cinnamon's own menus and panels.
+        // The window group stays below Cinnamon UI; restackHighlight() keeps
+        // this actor adjacent to the focused window inside that group.
         global.window_group.add_actor(this.frameActor);
     }
 
@@ -286,7 +322,6 @@ class ActiveWindowHighlight {
         this.frameActor.set_position(rect.x, rect.y);
         this.frameActor.set_size(rect.width, rect.height);
         this.frameActor.show();
-        this.frameActor.raise_top();
     }
 
     updateTopBar(rect) {
@@ -311,7 +346,8 @@ class ActiveWindowHighlight {
         if (!this.barActor) {
             this.barActor = new St.Widget({
                 name: 'ActiveWindowTopBar',
-                reactive: false
+                reactive: false,
+                visible: false
             });
             this.barActor.set_content(this.barCanvas);
             global.window_group.add_actor(this.barActor);
@@ -322,7 +358,6 @@ class ActiveWindowHighlight {
         this.barActor.set_size(width, height);
         this.barCanvas.invalidate();
         this.barActor.show();
-        this.barActor.raise_top();
     }
 
     drawTopBar(_canvas, context, width, height) {

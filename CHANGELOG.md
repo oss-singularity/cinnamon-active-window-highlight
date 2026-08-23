@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.1 — 2026-08-23
+
+- Keep the highlight directly above its focused window instead of above every
+  application window, so Always-on-top windows correctly cover it.
+- Follow Muffin restacking changes while the focused window stays unchanged.
+
 ## 1.1.0 — 2026-08-11
 
 - Add a configurable four-sided highlight for all supported window toolkits.

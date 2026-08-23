@@ -20,9 +20,10 @@ utility windows are supported; fullscreen and minimized windows are
 intentionally ignored. All appearance options are exposed through Cinnamon's
 native extension settings.
 
-Both the bar and frame live above application windows but below Cinnamon's own
-UI layer. The start menu, panels, Expo, overview and other Shell surfaces
-therefore remain on top of the highlight.
+Both the bar and frame are stacked immediately above the focused window. Other
+windows that Muffin keeps higher — including **Always on Top** windows — remain
+above the highlight. Cinnamon's start menu, panels, Expo, overview and other
+Shell surfaces remain above it as well.
 
 > **Screenshot note:** A “current window” capture may omit the animated top bar
 > because it is a Cinnamon compositor overlay, not part of the application's
