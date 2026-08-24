@@ -2,7 +2,7 @@
   "show-top-bar": {
     "type": "checkbox",
     "default": true,
-    "description": "Obere Markierungsleiste anzeigen"
+    "description": "Show top highlight bar"
   },
   "line-height": {
     "type": "spinbutton",
@@ -11,7 +11,7 @@
     "max": 25,
     "step": 1,
     "units": "px",
-    "description": "Höhe der oberen Leiste"
+    "description": "Top bar height"
   },
   "width-percent": {
     "type": "spinbutton",
@@ -20,7 +20,7 @@
     "max": 100,
     "step": 5,
     "units": "%",
-    "description": "Breite der oberen Leiste relativ zum Fenster"
+    "description": "Top bar width relative to window"
   },
   "slant-percent": {
     "type": "spinbutton",
@@ -29,7 +29,7 @@
     "max": 40,
     "step": 1,
     "units": "px",
-    "description": "Schräge der Leistenenden"
+    "description": "Top bar end slant"
   },
   "alpha-percent": {
     "type": "spinbutton",
@@ -38,7 +38,7 @@
     "max": 100,
     "step": 5,
     "units": "%",
-    "description": "Deckkraft der oberen Leiste"
+    "description": "Top bar opacity"
   },
   "anim-speed": {
     "type": "scale",
@@ -46,22 +46,22 @@
     "min": 1,
     "max": 20,
     "step": 1,
-    "description": "Geschwindigkeit der Farbverlaufsanimation"
+    "description": "Gradient animation speed"
   },
   "color-start": {
     "type": "colorchooser",
     "default": "rgb(0, 210, 255)",
-    "description": "Startfarbe der oberen Leiste"
+    "description": "Top bar start color"
   },
   "color-end": {
     "type": "colorchooser",
     "default": "rgb(58, 123, 213)",
-    "description": "Endfarbe der oberen Leiste"
+    "description": "Top bar end color"
   },
   "show-frame": {
     "type": "checkbox",
     "default": true,
-    "description": "Rahmen um das aktive Fenster anzeigen"
+    "description": "Show frame around active window"
   },
   "frame-width": {
     "type": "spinbutton",
@@ -70,7 +70,7 @@
     "max": 16,
     "step": 1,
     "units": "px",
-    "description": "Rahmenbreite"
+    "description": "Frame width"
   },
   "frame-radius": {
     "type": "spinbutton",
@@ -79,7 +79,7 @@
     "max": 64,
     "step": 1,
     "units": "px",
-    "description": "Radius der oberen Rahmenecken"
+    "description": "Top corner radius"
   },
   "frame-alpha-percent": {
     "type": "spinbutton",
@@ -88,11 +88,11 @@
     "max": 100,
     "step": 5,
     "units": "%",
-    "description": "Deckkraft des Rahmens"
+    "description": "Frame opacity"
   },
   "frame-color": {
     "type": "colorchooser",
     "default": "rgb(0, 190, 255)",
-    "description": "Rahmenfarbe"
+    "description": "Frame color"
   }
 }

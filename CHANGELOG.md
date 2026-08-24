@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.0 — 2026-08-24
+
+- Use English as the default language throughout the native settings dialog.
+- Add automated repository checks and refresh the public project presentation.
+
 ## 1.1.1 — 2026-08-23
 
 - Keep the highlight directly above its focused window instead of above every
