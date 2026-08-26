@@ -1,3 +1,5 @@
+/* global imports, ARGV */
+
 const ByteArray = imports.byteArray;
 const GLib = imports.gi.GLib;
 
