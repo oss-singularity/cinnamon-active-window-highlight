@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640">
+  <defs>
+    <linearGradient id="leftShade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#080a0f" stop-opacity="0.99"/>
+      <stop offset="0.5" stop-color="#080a0f" stop-opacity="0.94"/>
+      <stop offset="0.75" stop-color="#080a0f" stop-opacity="0.46"/>
+      <stop offset="1" stop-color="#080a0f" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#19b7a1"/>
+      <stop offset="0.55" stop-color="#24c6ee"/>
+      <stop offset="1" stop-color="#7384f2"/>
+    </linearGradient>
+    <linearGradient id="iconTile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#343640"/>
+      <stop offset="0.52" stop-color="#252830"/>
+      <stop offset="1" stop-color="#171a21"/>
+    </linearGradient>
+    <filter id="tileGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="9" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1280" height="640" fill="url(#leftShade)"/>
+  <rect x="1" y="1" width="1278" height="638" rx="26" fill="none" stroke="#55d7ee" stroke-opacity="0.22" stroke-width="2"/>
+
+  <text x="76" y="78" fill="#9aa8b7" font-family="Noto Sans, sans-serif" font-size="18" font-weight="700" letter-spacing="3">OSS SINGULARITY  /  OPEN SOURCE</text>
+  <rect x="76" y="101" width="244" height="5" rx="2.5" fill="url(#accent)"/>
+
+  <rect x="78" y="158" width="108" height="108" rx="31" fill="#19b7a1" opacity="0.16" filter="url(#tileGlow)"/>
+  <rect x="76" y="156" width="112" height="112" rx="32" fill="url(#iconTile)" stroke="#65def1" stroke-opacity="0.48"/>
+
+  <text x="218" y="202" fill="#ffffff" font-family="Noto Sans, sans-serif" font-size="50" font-weight="800">Active Window</text>
+  <text x="218" y="250" fill="#d7e2e8" font-family="Noto Sans, sans-serif" font-size="34" font-weight="600">Highlight</text>
+  <text x="218" y="286" fill="#9fdcec" font-family="Noto Sans, sans-serif" font-size="24" font-weight="600">for Cinnamon</text>
+
+  <text x="76" y="356" fill="#f4f8fa" font-family="Noto Sans, sans-serif" font-size="30" font-weight="600">{{TAGLINE}}</text>
+  <text x="76" y="399" fill="#aebbc6" font-family="Noto Sans, sans-serif" font-size="18">{{SUPPORTING}}</text>
+
+  <g font-family="Noto Sans, sans-serif" font-size="14" font-weight="700" letter-spacing="1.15">
+    <rect x="76" y="449" width="190" height="38" rx="19" fill="#121820" stroke="#24c6ee" stroke-opacity="0.82"/>
+    <text x="171" y="474" text-anchor="middle" fill="#dff9ff">COMPOSITOR LEVEL</text>
+
+    <rect x="279" y="449" width="148" height="38" rx="19" fill="#121820" stroke="#7384f2" stroke-opacity="0.76"/>
+    <text x="353" y="474" text-anchor="middle" fill="#e9e9ff">MULTI TOOLKIT</text>
+
+    <rect x="440" y="449" width="136" height="38" rx="19" fill="#121820" stroke="#27c2a8" stroke-opacity="0.78"/>
+    <text x="508" y="474" text-anchor="middle" fill="#dcfff3">LIVE CONFIG</text>
+  </g>
+
+  <text x="76" y="571" fill="#7f91a0" font-family="Noto Sans, sans-serif" font-size="16">github.com/oss-singularity/cinnamon-active-window-highlight</text>
+</svg>

@@ -1,10 +1,12 @@
+/* global imports */
+/* exported init, enable, disable */
+
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Top-bar design derived from Active Window Indicator by fabiodamio.
 
 const Clutter = imports.gi.Clutter;
 const St = imports.gi.St;
 const Meta = imports.gi.Meta;
-const Main = imports.ui.main;
 const Settings = imports.ui.settings;
 const Cairo = imports.cairo;
 const Mainloop = imports.mainloop;
@@ -190,7 +192,7 @@ class ActiveWindowHighlight {
                     'window-state-changed',
                     this.update.bind(this)
                 );
-            } catch (error) {
+            } catch {
                 this.stateSignal = 0;
             }
         }
@@ -443,14 +445,19 @@ class ActiveWindowHighlight {
     }
 }
 
+// Cinnamon loads this entry point by name.
+// eslint-disable-next-line no-unused-vars
 function init(metadata) {
     extension = new ActiveWindowHighlight(metadata);
 }
 
+// Cinnamon loads these entry points by name.
+// eslint-disable-next-line no-unused-vars
 function enable() {
     extension.enable();
 }
 
+// eslint-disable-next-line no-unused-vars
 function disable() {
     extension.disable();
 }
