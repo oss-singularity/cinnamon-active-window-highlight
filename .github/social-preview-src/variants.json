@@ -1,0 +1,7 @@
+{
+  "generic": {
+    "output": ".github/social-preview.png",
+    "tagline": "A clear focus indicator for every window.",
+    "supporting": "Toolkit-independent compositor focus for Cinnamon."
+  }
+}

@@ -10,21 +10,31 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/ClaudiuSchuster/cinnamon-active-window-highlight/actions/workflows/check.yml"><img alt="Checks" src="https://github.com/ClaudiuSchuster/cinnamon-active-window-highlight/actions/workflows/check.yml/badge.svg"></a>
+  <a href="https://github.com/oss-singularity/cinnamon-active-window-highlight/actions/workflows/check.yml"><img alt="Checks" src="https://github.com/oss-singularity/cinnamon-active-window-highlight/actions/workflows/check.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="License GPL-2.0-or-later" src="https://img.shields.io/badge/license-GPL--2.0--or--later-6f5bd5"></a>
   <img alt="Cinnamon 5.8 or newer" src="https://img.shields.io/badge/Cinnamon-5.8%2B-75c46b">
   <img alt="Toolkit independent" src="https://img.shields.io/badge/windows-GTK%20%7C%20Qt%20%7C%20Wine-4f7ee8">
 </p>
 
+<p align="center"><strong>Make the focused window unmistakable.</strong><br>
+Keep your place across GTK, Qt, Wine and every other window on the desktop.</p>
+
+<p align="center">
+  <img src=".github/social-preview.png" width="100%"
+       alt="Active Window Highlight for Cinnamon — compositor-level focus indicator">
+</p>
+
+<p align="center">
+  <img src="docs/settings-window-english.png" width="100%"
+       alt="Active Window Highlight settings window with configurable top bar and frame options">
+</p>
+
+<p align="center"><sub>Configure the highlight live through Cinnamon's native extension settings.</sub></p>
+
 The extension draws at compositor level, so the highlight also works around
 Chromium, Qt, Wine and other non-GTK windows.
 
-![Active Window Highlight settings with the blue frame and animated top bar](docs/settings-window-english.png)
-
-The screenshot shows Cinnamon's native settings window. Every option can be
-changed while the extension is running.
-
-## What it provides
+## Highlights
 
 - A configurable four-sided frame with independently controlled color,
   thickness, opacity and top-corner radius.
@@ -59,7 +69,7 @@ Shell surfaces remain above it as well.
 ## Installation
 
 ```bash
-git clone https://github.com/ClaudiuSchuster/cinnamon-active-window-highlight.git
+git clone https://github.com/oss-singularity/cinnamon-active-window-highlight.git
 cd cinnamon-active-window-highlight
 ./install.sh
 ```
