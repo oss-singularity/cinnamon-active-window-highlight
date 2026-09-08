@@ -84,8 +84,9 @@ class ActiveWindowHighlight {
 
         this.showFrame = true;
         this.frameWidth = 1;
-        this.frameRadius = 10;
-        this.frameAlphaPercent = 95;
+        this.frameRadius = 8;
+        this.roundTopCorners = true;
+        this.frameAlphaPercent = 80;
         this.frameColor = 'rgb(0, 190, 255)';
     }
 
@@ -104,6 +105,7 @@ class ActiveWindowHighlight {
         this.settings.bind('show-frame', 'showFrame', update);
         this.settings.bind('frame-width', 'frameWidth', update);
         this.settings.bind('frame-radius', 'frameRadius', update);
+        this.settings.bind('round-top-corners', 'roundTopCorners', update);
         this.settings.bind('frame-alpha-percent', 'frameAlphaPercent', update);
         this.settings.bind('frame-color', 'frameColor', update);
 
@@ -221,6 +223,10 @@ class ActiveWindowHighlight {
             window.located_on_workspace(activeWorkspace);
     }
 
+    isFullyMaximized(window) {
+        return window.maximized_horizontally && window.maximized_vertically;
+    }
+
     hideAll() {
         if (this.barActor) {
             this.barActor.hide();
@@ -243,7 +249,8 @@ class ActiveWindowHighlight {
             return;
         }
 
-        this.updateFrame(rect);
+        let suppressFrame = this.isFullyMaximized(focusWindow);
+        this.updateFrame(rect, suppressFrame);
         this.updateTopBar(rect);
         this.restackHighlight();
     }
@@ -287,8 +294,8 @@ class ActiveWindowHighlight {
         global.window_group.add_actor(this.frameActor);
     }
 
-    updateFrame(rect) {
-        if (!this.showFrame) {
+    updateFrame(rect, suppressFrame) {
+        if (suppressFrame || !this.showFrame) {
             if (this.frameActor) {
                 this.frameActor.hide();
             }
@@ -300,13 +307,13 @@ class ActiveWindowHighlight {
             1,
             Math.min(Math.round(this.frameWidth), rect.width, rect.height)
         );
-        let radius = Math.max(
+        let radius = this.roundTopCorners ? Math.max(
             0,
             Math.min(
                 Math.round(this.frameRadius),
                 Math.floor(Math.min(rect.width, rect.height) / 2)
             )
-        );
+        ) : 0;
         let opacity = Math.round(
             255 * Math.max(0, Math.min(100, this.frameAlphaPercent)) / 100
         );

@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.0.0 — 2026-09-08
+
+- Keep the top highlight bar visible for fully maximized windows while hiding
+  the frame, so maximized content is not surrounded by a 1 px outline.
+- Keep true fullscreen windows fully unobstructed and add a setting to switch
+  the top corners between rounded and square, with a working top-corner radius
+  control in the native settings dialog. The default radius is 8 px to match
+  the active Mint-Y Cinnamon window theme, and the default frame opacity is
+  80%. The radius field stays visible but is disabled when square corners are
+  selected.
+
 ## 1.2.0 — 2026-08-24
 
 - Use English as the default language throughout the native settings dialog.

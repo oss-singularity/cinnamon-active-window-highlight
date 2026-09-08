@@ -37,7 +37,8 @@ Chromium, Qt, Wine and other non-GTK windows.
 ## Highlights
 
 - A configurable four-sided frame with independently controlled color,
-  thickness, opacity and top-corner radius.
+  thickness, opacity and top-corner radius, plus a switch for rounded or
+  square top corners.
 - An optional animated gradient bar above the focused window.
 - Live settings through Cinnamon's native extension dialog.
 - Support for normal windows, dialogs, modal dialogs and utility windows.
@@ -48,12 +49,17 @@ Chromium, Qt, Wine and other non-GTK windows.
 
 ![Rounded blue active-window frame and animated top bar](docs/active-window-highlight.png)
 
-The default frame is blue, 1 px wide and 95% opaque. Its top corners use a
-configurable 10 px radius while its bottom corners stay square to match
-Cinnamon's default window shape. Normal windows, dialogs, modal dialogs and
-utility windows are supported; fullscreen and minimized windows are
-intentionally ignored. All appearance options are exposed through Cinnamon's
-native extension settings.
+The default frame is blue, 1 px wide and 80% opaque. Its top corners use a
+configurable 8 px radius, matching the default Mint-Y Cinnamon window theme,
+while its bottom corners stay square to match Cinnamon's window shape. Normal
+windows, dialogs, modal dialogs and utility
+windows are supported. Fully maximized windows keep the top highlight bar
+visible while the frame is hidden, so the content is not surrounded by an
+unnecessary 1 px outline. True fullscreen and minimized windows are ignored.
+The top frame corners are rounded by default and can be switched to square
+corners. The radius field remains visible but is disabled while square corners
+are active. All appearance options are exposed through Cinnamon's native
+extension settings.
 
 Both the bar and frame are stacked immediately above the focused window. Other
 windows that Muffin keeps higher — including **Always on Top** windows — remain
