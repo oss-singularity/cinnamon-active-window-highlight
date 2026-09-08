@@ -13,7 +13,15 @@ new Function(source);
 for (let required of [
     "global.display.connect(\n            'restacked'",
     'focusWindow.get_compositor_private()',
-    'global.window_group.set_child_above_sibling(actor, sibling)'
+    'global.window_group.set_child_above_sibling(actor, sibling)',
+    '!window.is_fullscreen()',
+    'this.isFullyMaximized(focusWindow)',
+    'window.maximized_horizontally && window.maximized_vertically',
+    'this.updateFrame(rect, suppressFrame);',
+    'if (suppressFrame || !this.showFrame)',
+    "this.settings.bind('frame-radius', 'frameRadius', update)",
+    "this.settings.bind('round-top-corners', 'roundTopCorners', update)",
+    'this.roundTopCorners ? Math.max('
 ]) {
     if (!source.includes(required)) {
         throw new Error(`Missing stack-aware highlight behavior: ${required}`);

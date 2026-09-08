@@ -1,0 +1,17 @@
+{
+  "uuid": "active-window-highlight@oss-singularity",
+  "author": "ClaudiuSchuster",
+  "payload": [
+    "metadata.json",
+    "extension.js",
+    "settings-schema.json",
+    "FrameRadiusWidget.py",
+    "icon.png",
+    "README.md",
+    "CHANGELOG.md",
+    "ATTRIBUTION.md",
+    "LICENSE"
+  ],
+  "screenshot": "docs/active-window-highlight.png",
+  "submission-readme": "packaging/spices-README.md"
+}
