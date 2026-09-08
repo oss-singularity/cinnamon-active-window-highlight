@@ -63,8 +63,11 @@ extension settings.
 
 Both the bar and frame are stacked immediately above the focused window. Other
 windows that Muffin keeps higher — including **Always on Top** windows — remain
-above the highlight. Cinnamon's start menu, panels, Expo, overview and other
-Shell surfaces remain above it as well.
+above the highlight. Cinnamon's start menu, Expo, overview and other Shell
+surfaces remain above it as well. When a window frame touches a Cinnamon panel,
+only the overlapping edge segment (1 px by default) is mirrored above that
+panel so the panel cannot hide the border; the full highlight is never raised
+above the Shell.
 
 > **Screenshot note:** A “current window” capture may omit the animated top bar
 > because it is a Cinnamon compositor overlay, not part of the application's
