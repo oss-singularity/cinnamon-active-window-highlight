@@ -21,7 +21,14 @@ for (let required of [
     'if (suppressFrame || !this.showFrame)',
     "this.settings.bind('frame-radius', 'frameRadius', update)",
     "this.settings.bind('round-top-corners', 'roundTopCorners', update)",
-    'this.roundTopCorners ? Math.max('
+    'this.roundTopCorners ? Math.max(',
+    'this.updatePanelFrame(\n            rect,\n            thickness,\n            radius,',
+    'this.frameStyle(thickness, radius, red, green, blue)',
+    'actor.set_clip(',
+    'panel.panelPosition',
+    'panel.actor.get_transformed_position()',
+    'Main.uiGroup.add_actor(actor)',
+    'Main.uiGroup.set_child_above_sibling(actor, highestPanel)'
 ]) {
     if (!source.includes(required)) {
         throw new Error(`Missing stack-aware highlight behavior: ${required}`);

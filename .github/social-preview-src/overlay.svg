@@ -34,9 +34,8 @@
   <rect x="78" y="158" width="108" height="108" rx="31" fill="#19b7a1" opacity="0.16" filter="url(#tileGlow)"/>
   <rect x="76" y="156" width="112" height="112" rx="32" fill="url(#iconTile)" stroke="#65def1" stroke-opacity="0.48"/>
 
-  <text x="218" y="202" fill="#ffffff" font-family="Noto Sans, sans-serif" font-size="50" font-weight="800">Active Window</text>
-  <text x="218" y="250" fill="#d7e2e8" font-family="Noto Sans, sans-serif" font-size="34" font-weight="600">Highlight</text>
-  <text x="218" y="286" fill="#9fdcec" font-family="Noto Sans, sans-serif" font-size="24" font-weight="600">for Cinnamon</text>
+  <text x="218" y="226" fill="#ffffff" font-family="Noto Sans, sans-serif" font-size="50" font-weight="800">Active Window Highlight</text>
+  <text x="218" y="270" fill="#9fdcec" font-family="Noto Sans, sans-serif" font-size="24" font-weight="600">for Cinnamon</text>
 
   <text x="76" y="356" fill="#f4f8fa" font-family="Noto Sans, sans-serif" font-size="30" font-weight="600">{{TAGLINE}}</text>
   <text x="76" y="399" fill="#aebbc6" font-family="Noto Sans, sans-serif" font-size="18">{{SUPPORTING}}</text>

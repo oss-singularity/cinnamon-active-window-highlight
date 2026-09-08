@@ -10,6 +10,8 @@
   the active Mint-Y Cinnamon window theme, and the default frame opacity is
   80%. The radius field stays visible but is disabled when square corners are
   selected.
+- Keep the configured frame edge visible when a focused window is docked against
+  a Cinnamon panel without lifting the complete highlight above the Shell.
 
 ## 1.2.0 — 2026-08-24
 

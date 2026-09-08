@@ -8,6 +8,7 @@ const Clutter = imports.gi.Clutter;
 const St = imports.gi.St;
 const Meta = imports.gi.Meta;
 const Settings = imports.ui.settings;
+const Main = imports.ui.main;
 const Cairo = imports.cairo;
 const Mainloop = imports.mainloop;
 const GLib = imports.gi.GLib;
@@ -60,6 +61,7 @@ class ActiveWindowHighlight {
         this.focusSignal = 0;
         this.workspaceSignal = 0;
         this.restackSignal = 0;
+        this.panelManagerSignal = 0;
         this.positionSignal = 0;
         this.sizeSignal = 0;
         this.stateSignal = 0;
@@ -68,6 +70,7 @@ class ActiveWindowHighlight {
         this.barActor = null;
         this.barCanvas = null;
         this.frameActor = null;
+        this.panelFrameActors = [];
 
         this.animationId = 0;
         this.animationProgress = 0;
@@ -109,6 +112,13 @@ class ActiveWindowHighlight {
         this.settings.bind('frame-alpha-percent', 'frameAlphaPercent', update);
         this.settings.bind('frame-color', 'frameColor', update);
 
+        if (Main.panelManager) {
+            this.panelManagerSignal = Main.panelManager.connect(
+                'monitors-changed',
+                update
+            );
+        }
+
         this.focusSignal = global.display.connect(
             'notify::focus-window',
             this.onFocusChanged.bind(this)
@@ -141,6 +151,10 @@ class ActiveWindowHighlight {
             global.display.disconnect(this.restackSignal);
             this.restackSignal = 0;
         }
+        if (this.panelManagerSignal && Main.panelManager) {
+            Main.panelManager.disconnect(this.panelManagerSignal);
+            this.panelManagerSignal = 0;
+        }
 
         this.cleanupWindowSignals();
 
@@ -154,6 +168,7 @@ class ActiveWindowHighlight {
             this.frameActor.destroy();
             this.frameActor = null;
         }
+        this.clearPanelFrameActors();
 
         if (this.settings) {
             this.settings.finalize();
@@ -234,6 +249,7 @@ class ActiveWindowHighlight {
         if (this.frameActor) {
             this.frameActor.hide();
         }
+        this.clearPanelFrameActors();
     }
 
     update() {
@@ -277,6 +293,7 @@ class ActiveWindowHighlight {
                 sibling = actor;
             }
         }
+        this.restackPanelFrameActors();
     }
 
     ensureFrameActor() {
@@ -294,8 +311,168 @@ class ActiveWindowHighlight {
         global.window_group.add_actor(this.frameActor);
     }
 
+    clearPanelFrameActors() {
+        for (let actor of this.panelFrameActors) {
+            if (actor && !actor.is_finalized()) {
+                actor.destroy();
+            }
+        }
+        this.panelFrameActors = [];
+    }
+
+    getPanelRect(panel) {
+        if (!panel || !panel.actor || !panel.actor.visible) {
+            return null;
+        }
+
+        let position = panel.actor.get_transformed_position();
+        let size = panel.actor.get_transformed_size();
+        let width = Math.round(size[0]);
+        let height = Math.round(size[1]);
+        if (width <= 0 || height <= 0) {
+            return null;
+        }
+
+        return {
+            x: Math.round(position[0]),
+            y: Math.round(position[1]),
+            width: width,
+            height: height
+        };
+    }
+
+    intersectRects(first, second) {
+        let x = Math.max(first.x, second.x);
+        let y = Math.max(first.y, second.y);
+        let right = Math.min(first.x + first.width, second.x + second.width);
+        let bottom = Math.min(first.y + first.height, second.y + second.height);
+        if (right <= x || bottom <= y) {
+            return null;
+        }
+        return {
+            x: x,
+            y: y,
+            width: right - x,
+            height: bottom - y
+        };
+    }
+
+    panelEdgeRect(panel, rect, thickness) {
+        switch (panel.panelPosition) {
+            case 0: // top
+                return { x: rect.x, y: rect.y, width: rect.width, height: thickness };
+            case 1: // bottom
+                return {
+                    x: rect.x,
+                    y: rect.y + rect.height - thickness,
+                    width: rect.width,
+                    height: thickness
+                };
+            case 2: // left
+                return { x: rect.x, y: rect.y, width: thickness, height: rect.height };
+            case 3: // right
+                return {
+                    x: rect.x + rect.width - thickness,
+                    y: rect.y,
+                    width: thickness,
+                    height: rect.height
+                };
+            default:
+                return null;
+        }
+    }
+
+    restackPanelFrameActors() {
+        if (!Main.uiGroup || !Main.panelManager || this.panelFrameActors.length === 0) {
+            return;
+        }
+
+        let children = Main.uiGroup.get_children();
+        let highestPanel = null;
+        let highestPanelIndex = -1;
+        for (let panel of Main.panelManager.panels || []) {
+            if (!panel || !panel.actor || panel.actor.get_parent() !== Main.uiGroup) {
+                continue;
+            }
+            let index = children.indexOf(panel.actor);
+            if (index > highestPanelIndex) {
+                highestPanel = panel.actor;
+                highestPanelIndex = index;
+            }
+        }
+        if (!highestPanel) {
+            return;
+        }
+
+        for (let actor of this.panelFrameActors) {
+            if (actor.get_parent() === Main.uiGroup) {
+                Main.uiGroup.set_child_above_sibling(actor, highestPanel);
+            }
+        }
+    }
+
+    frameStyle(thickness, radius, red, green, blue) {
+        return [
+            'background-color: transparent',
+            `border: ${thickness}px solid rgb(${red}, ${green}, ${blue})`,
+            `border-radius: ${radius}px ${radius}px 0 0`
+        ].join('; ') + ';';
+    }
+
+    updatePanelFrame(rect, thickness, radius, red, green, blue, opacity) {
+        this.clearPanelFrameActors();
+        if (!Main.uiGroup || !Main.panelManager) {
+            return;
+        }
+
+        for (let panel of Main.panelManager.panels || []) {
+            if (!panel) {
+                continue;
+            }
+            let panelRect = this.getPanelRect(panel);
+            let edgeRect = this.panelEdgeRect(panel, rect, thickness);
+            if (!panelRect || !edgeRect) {
+                continue;
+            }
+
+            // Include the panel shadow and the one-pixel allocation boundary.
+            panelRect.x -= 2;
+            panelRect.y -= 2;
+            panelRect.width += 4;
+            panelRect.height += 4;
+            if (!this.intersectRects(edgeRect, panelRect)) {
+                continue;
+            }
+
+            let actor = new St.Widget({
+                name: 'ActiveWindowPanelFrame',
+                reactive: false,
+                visible: false
+            });
+            let clip = this.intersectRects(rect, panelRect);
+            if (!clip) {
+                continue;
+            }
+            actor.set_style(this.frameStyle(thickness, radius, red, green, blue));
+            actor.set_opacity(opacity);
+            actor.set_position(rect.x, rect.y);
+            actor.set_size(rect.width, rect.height);
+            actor.set_clip(
+                clip.x - rect.x,
+                clip.y - rect.y,
+                clip.width,
+                clip.height
+            );
+            Main.uiGroup.add_actor(actor);
+            actor.show();
+            this.panelFrameActors.push(actor);
+        }
+        this.restackPanelFrameActors();
+    }
+
     updateFrame(rect, suppressFrame) {
         if (suppressFrame || !this.showFrame) {
+            this.clearPanelFrameActors();
             if (this.frameActor) {
                 this.frameActor.hide();
             }
@@ -320,17 +497,22 @@ class ActiveWindowHighlight {
         let [red, green, blue] = parseColor(this.frameColor).map(
             channel => Math.round(channel * 255)
         );
-        let style = [
-            'background-color: transparent',
-            `border: ${thickness}px solid rgb(${red}, ${green}, ${blue})`,
-            `border-radius: ${radius}px ${radius}px 0 0`
-        ].join('; ') + ';';
-
-        this.frameActor.set_style(style);
+        this.frameActor.set_style(
+            this.frameStyle(thickness, radius, red, green, blue)
+        );
         this.frameActor.set_opacity(opacity);
         this.frameActor.set_position(rect.x, rect.y);
         this.frameActor.set_size(rect.width, rect.height);
         this.frameActor.show();
+        this.updatePanelFrame(
+            rect,
+            thickness,
+            radius,
+            red,
+            green,
+            blue,
+            opacity
+        );
     }
 
     updateTopBar(rect) {
